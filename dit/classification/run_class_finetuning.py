@@ -13,6 +13,7 @@ import os
 
 from pathlib import Path
 
+
 from timm.data.mixup import Mixup
 from timm.models import create_model
 from timm.loss import LabelSmoothingCrossEntropy, SoftTargetCrossEntropy
@@ -24,6 +25,10 @@ from engine_for_finetuning import train_one_epoch, evaluate
 from utils import NativeScalerWithGradNormCount as NativeScaler
 import utils
 from scipy import interpolate
+
+
+from loguru import logger
+logger.add("logfile.log", compression="zip",backtrace=True, diagnose=True) 
 
 def get_args():
     parser = argparse.ArgumentParser('BEiT fine-tuning and evaluation script for image classification', add_help=False)
@@ -308,6 +313,17 @@ def main(args, ds_init):
     if "beit" not in args.model:
         model = create_model(args.model, pretrained=False, num_classes=args.nb_classes, distilled=False)
     else:
+        args_being_passed =  [args.model],dict(pretrained=False,
+            num_classes=args.nb_classes,
+            drop_rate=args.drop,
+            drop_path_rate=args.drop_path,
+            attn_drop_rate=args.attn_drop_rate,
+            drop_block_rate=None,
+            use_mean_pooling=args.use_mean_pooling,
+            init_scale=args.init_scale,
+            use_rel_pos_bias=args.rel_pos_bias,
+            use_abs_pos_emb=args.abs_pos_emb,
+            init_values=args.layer_scale_init_value,)
         model = create_model(
             args.model,
             pretrained=False,
