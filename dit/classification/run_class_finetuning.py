@@ -10,6 +10,7 @@ import torch
 import torch.backends.cudnn as cudnn
 import json
 import os
+import sys
 
 from pathlib import Path
 
@@ -26,9 +27,9 @@ from utils import NativeScalerWithGradNormCount as NativeScaler
 import utils
 from scipy import interpolate
 
-
 from loguru import logger
 logger.add("logfile.log", compression="zip",backtrace=True, diagnose=True) 
+logger.add(sys.stderr,backtrace=True, diagnose=True) 
 
 def get_args():
     parser = argparse.ArgumentParser('BEiT fine-tuning and evaluation script for image classification', add_help=False)
