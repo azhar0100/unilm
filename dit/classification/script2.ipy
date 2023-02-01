@@ -1,0 +1,14 @@
+# coding: utf-8
+%cpaste
+sorted(list(set([x.parent for x in train_imgs])))
+sorted(list(set([x.parent.name for x in train_imgs])))
+cls2idx = {k:v for v,k in enumerate(sorted(list(set([x.parent.name for x in train_imgs]))))}
+cls2idx
+import json
+json.dump(cls2idx,open('cls2idx.json','w'))
+!cat cls2idx.jsoni
+!cat cls2idx.json
+known_path.open('w').write( '\n'.join([f"{x} {cls2idx[x.parent.name]}" for x in train_imgs]) )
+!cat cls2idx.json
+!cat {known_path}
+%save -r script2 1-99999
